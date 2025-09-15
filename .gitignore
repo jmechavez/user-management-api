@@ -1,0 +1,49 @@
+# Binaries
+/bin/
+/cmd/server/server
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Go build stuff
+*.out
+*.log
+*.cache/
+*.tmp
+
+# Dependency directories
+/vendor/
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.DS_Store
+
+# OS stuff
+Thumbs.db
+
+# SQLC generated binary cache (but keep generated Go code!)
+sqlc.gen.go.tmp
+
+# Env / secrets
+.env
+*.env
+
+# Docker
+*.pid
+*.seed
+*.bak
+*.sqlc.json
+
+# If you use migrations
+db/migrations/*.log
+
+# If you use Node/npm for frontend
+node_modules/
+package-lock.json
+
