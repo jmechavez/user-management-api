@@ -3,16 +3,17 @@ package main
 
 import (
 	"encoding/json" // for encoding Go structs to JSON
-	"fmt"           // for formatted I/O
-	"log"           // for logging errors
-	"net/http"      // for HTTP server and request handling
+	"encoding/xml"
+	"fmt"      // for formatted I/O
+	"log"      // for logging errors
+	"net/http" // for HTTP server and request handling
 )
 
 // User represents a basic user model.
 type User struct {
-	Name  string `json:"name"`  // user's name, mapped to JSON key "name"
-	Email string `json:"email"` // user's email, mapped to JSON key "email"
-	ID    int    `json:"id"`    // user's ID, mapped to JSON key "id"
+	Name  string `json:"name" xml:"name"`   // user's name, mapped to JSON key "name"
+	Email string `json:"email" xml:"email"` // user's email, mapped to JSON key "email"
+	ID    int    `json:"id" xml:"id"`       // user's ID, mapped to JSON key "id"
 }
 
 // main registers routes and starts the server.
@@ -41,9 +42,13 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		{"test", "test01@test.com", 2345},
 	}
 
-	// set response header so client knows it’s JSON
-	w.Header().Set("Content-Type", "application/json")
-
-	// encode users slice as JSON and write to response
-	json.NewEncoder(w).Encode(users)
+	// set response header so client knows it’s XML if not JSON
+	if r.Header().Get("Content-Type") == "application/xml" {
+		w.Header().Add("Content-Type", "application/xml")
+		xml.NewEncoder(w).Encode(users)
+	} else {
+		// set response header so client knows it’s JSON
+		w.Header().Add("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(users)
+	}
 }
