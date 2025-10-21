@@ -12,7 +12,9 @@ import (
 func Start() {
 	router := mux.NewRouter()
 
-	uh := UserHandler{services.NewUserService(domain.NewUserRepositoryStub())}
+	// uh := UserHandler{services.NewUserService(domain.NewUserRepositoryStub())}
+	uh := UserHandler{services.NewUserService(domain.NewUserRepositoryDb())}
+
 	router.HandleFunc("/users", uh.FindAll).Methods(http.MethodGet)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
