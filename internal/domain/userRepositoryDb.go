@@ -12,6 +12,35 @@ type UserRepositoryDb struct {
 	db *sql.DB
 }
 
+func (r UserRepositoryDb) FindAllv2() ([]User, error) {
+	query := `SELECT id_number, email FROM users`
+
+	rows, err := r.db.Query(query)
+	if err != nil {
+		log.Println("Error executing query:", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	users := make([]User, 0)
+	for rows.Next() {
+		var u User
+		err := rows.Scan(&u.IdNumber, &u.Email)
+		if err != nil {
+			log.Println("Error while scanning user:", err)
+			return nil, err
+		}
+		users = append(users, u)
+	}
+
+	if err = rows.Err(); err != nil {
+		log.Println("Row iteration error:", err)
+		return nil, err
+	}
+
+	return users, nil
+}
+
 func (r UserRepositoryDb) FindAll() ([]User, error) {
 	query := `SELECT id_number, first_name, last_name, email FROM users`
 
