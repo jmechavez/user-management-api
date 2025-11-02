@@ -1,17 +1,26 @@
 package services
 
-import "github.com/jmechavez/user-management-api/internal/domain"
+import (
+	apperrors "github.com/jmechavez/user-management-api/internal/appErrors"
+	"github.com/jmechavez/user-management-api/internal/domain"
+)
 
 type UserServices interface {
-	FindAllUser() ([]domain.User, error)
+	FindAllUser() ([]domain.User, *apperrors.AppError)
+	FindById(int64) (*domain.User, *apperrors.AppError)
 }
 
 type DefaultUserService struct {
 	repo domain.UserRepository
 }
 
-func (s DefaultUserService) FindAllUser() ([]domain.User, error) {
+func (s DefaultUserService) FindAllUser() ([]domain.User, *apperrors.AppError) {
+	// return s.repo.FindAll()
 	return s.repo.FindAll()
+}
+
+func (s DefaultUserService) FindById(id int64) (*domain.User, *apperrors.AppError) {
+	return s.repo.FindByID(id)
 }
 
 func NewUserService(repository domain.UserRepository) DefaultUserService {
