@@ -1,5 +1,7 @@
 package domain
 
+import apperrors "github.com/jmechavez/user-management-api/internal/appErrors"
+
 type User struct {
 	IdNumber  int64  `json:"idNumber,omitempty"`
 	FirstName string `json:"firstName,omitempty"`
@@ -8,6 +10,7 @@ type User struct {
 }
 
 type UserRepository interface {
-	FindAll() ([]User, error)
-	FindAllv2() ([]User, error)
+	FindAll() ([]User, *apperrors.AppError)
+	FindAllv2() ([]User, *apperrors.AppError)
+	FindByID(id int64) (*User, *apperrors.AppError)
 }

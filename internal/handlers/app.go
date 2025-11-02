@@ -29,6 +29,7 @@ func Start() {
 
 	// Register routes with method checking
 	mux.HandleFunc("/users", methodHandler(http.MethodGet, uh.FindAll))
+	mux.HandleFunc("/users/", methodHandler(http.MethodGet, uh.FindById))
 
 	// Start the server
 	log.Println("Server starting on :8080")
